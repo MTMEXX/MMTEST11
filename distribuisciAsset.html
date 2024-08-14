@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MARKET MASTER - Distribuisci Asset</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        .asset-distribution {
+            margin: 20px 0;
+            font-size: 18px;
+            text-align: left;
+        }
+        .button {
+            padding: 15px 30px;
+            font-size: 18px;
+            margin: 20px 10px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>MARKET MASTER - Distribuisci Asset</h1>
+    <div id="distributionContainer"></div>
+    <button class="button" onclick="avviaGioco()">Avvia Gioco</button>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const players = JSON.parse(localStorage.getItem('players')) || [];
+            const assetConfig = JSON.parse(localStorage.getItem('assetConfig')) || {};
+
+            if (players.length === 0 || !assetConfig) {
+                alert("Dati mancanti. Torna alla configurazione degli asset.");
+                window.location.href = "configuraAsset.html";
+                return;
+            }
+
+            const distributionContainer = document.getElementById('distributionContainer');
+            const totalPlayers = players.length;
+
+            const azioniPerPlayer = Math.floor(assetConfig.azioni.quantita / totalPlayers);
+            const criptoPerPlayer = Math.floor(assetConfig.cripto.quantita / totalPlayers);
+            const materiePrimePerPlayer = Math.floor(assetConfig.materiePrime.quantita / totalPlayers);
+            const cashPerPlayer = (assetConfig.cashCirculation / totalPlayers).toFixed(2);
+
+            players.forEach((player, index) => {
+                const playerDiv = document.createElement('div');
+                playerDiv.className = 'asset-distribution';
+                playerDiv.innerHTML = `
+                    <strong>${player}</strong>:<br>
+                    Azioni: ${azioniPerPlayer}<br>
+                    Criptovalute: ${criptoPerPlayer}<br>
+                    Materie Prime: ${materiePrimePerPlayer}<br>
+                    Obbligazioni: 0 (non distribuite all'inizio)<br>
+                    Cash: €${cashPerPlayer}
+                `;
+                distributionContainer.appendChild(playerDiv);
+            });
+        });
+
+        function avviaGioco() {
+            window.location.href = "start.html";
+        }
+    </script>
+</body>
+</html>

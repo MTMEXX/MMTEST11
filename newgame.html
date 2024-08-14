@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MARKET MASTER - Nuova Partita</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        .input-group {
+            margin: 20px 0;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        .input-group input {
+            padding: 10px;
+            font-size: 16px;
+            width: 200px;
+        }
+        .button {
+            padding: 15px 30px;
+            font-size: 18px;
+            margin: 20px 10px;
+            cursor: pointer;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            display: inline-block;
+        }
+        .button.hidden {
+            display: none;
+        }
+        .button.green {
+            background-color: #4CAF50;
+        }
+        .button.red {
+            background-color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <h1>MARKET MASTER - Nuova Partita</h1>
+    <div class="input-group">
+        <label for="numeroGiocatori">Numero di Giocatori:</label>
+        <input type="number" id="numeroGiocatori" min="1" max="10" value="2" onchange="resetPlayerInputs()">
+    </div>
+    <div id="playerNames"></div>
+    <button id="generaGiocatoriBtn" class="button green" onclick="generatePlayerInputs()">GENERA GIOCATORI</button>
+
+    <script>
+        function generatePlayerInputs() {
+            const numeroGiocatori = document.getElementById('numeroGiocatori').value;
+            const playerNamesDiv = document.getElementById('playerNames');
+            playerNamesDiv.innerHTML = '';
+
+            for (let i = 1; i <= numeroGiocatori; i++) {
+                const inputGroup = document.createElement('div');
+                inputGroup.className = 'input-group';
+                inputGroup.innerHTML = `
+                    <label for="giocatore${i}">Nome Giocatore ${i}:</label>
+                    <input type="text" id="giocatore${i}" oninput="validatePlayerNames()">
+                `;
+                playerNamesDiv.appendChild(inputGroup);
+            }
+
+            // Mostra "GENERA GIOCATORI"
+            document.getElementById('generaGiocatoriBtn').innerText = "GENERA GIOCATORI";
+        }
+
+        function validatePlayerNames() {
+            const numeroGiocatori = document.getElementById('numeroGiocatori').value;
+            let allFilled = true;
+
+            for (let i = 1; i <= numeroGiocatori; i++) {
+                const playerName = document.getElementById(`giocatore${i}`).value;
+                if (playerName.trim() === '') {
+                    allFilled = false;
+                    break;
+                }
+            }
+
+            if (allFilled) {
+                // Cambia testo del pulsante e setta l'azione su "Vai a configurazione parametri di gioco"
+                document.getElementById('generaGiocatoriBtn').innerText = "Vai a configurazione parametri di gioco";
+                document.getElementById('generaGiocatoriBtn').onclick = function() {
+                    startGame();
+                };
+            } else {
+                // Mostra "GENERA GIOCATORI"
+                document.getElementById('generaGiocatoriBtn').innerText = "GENERA GIOCATORI";
+                document.getElementById('generaGiocatoriBtn').onclick = function() {
+                    generatePlayerInputs();
+                };
+            }
+        }
+
+        function startGame() {
+            const numeroGiocatori = document.getElementById('numeroGiocatori').value;
+            const players = [];
+
+            for (let i = 1; i <= numeroGiocatori; i++) {
+                const playerName = document.getElementById(`giocatore${i}`).value;
+                if (playerName.trim() === '') {
+                    alert(`Inserisci il nome per Giocatore ${i}`);
+                    return;
+                }
+                players.push(playerName);
+            }
+
+            localStorage.setItem('players', JSON.stringify(players));
+            window.location.href = "configuraAsset.html"; // Reindirizza alla pagina di configurazione
+        }
+
+        function resetPlayerInputs() {
+            document.getElementById('playerNames').innerHTML = '';
+            document.getElementById('generaGiocatoriBtn').innerText = "GENERA GIOCATORI";
+            document.getElementById('generaGiocatoriBtn').onclick = function() {
+                generatePlayerInputs();
+            };
+        }
+    </script>
+</body>
+</html>

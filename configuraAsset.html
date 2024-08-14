@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MARKET MASTER - Configura Asset</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        table {
+            margin: 0 auto;
+            border-collapse: collapse;
+            width: 80%;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+            font-size: 18px;
+        }
+        th {
+            background-color: #333;
+            color: white;
+        }
+        .input-group {
+            margin: 20px 0;
+            font-size: 20px;
+            text-align: left;
+        }
+        .input-group select {
+            padding: 10px;
+            font-size: 18px;
+            width: 250px;
+        }
+        .input-group input {
+            padding: 10px;
+            font-size: 18px;
+            width: 200px;
+            margin-left: 10px;
+        }
+        .button {
+            padding: 15px 30px;
+            font-size: 20px;
+            margin: 20px 10px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        .market-cap {
+            font-weight: bold;
+            font-size: 20px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>MARKET MASTER - Configura Asset</h1>
+
+    <table>
+        <tr>
+            <th>Valore Iniziale</th>
+            <th>Quantità Iniziale</th>
+            <th>Market Cap Iniziale</th>
+            <th>% Market Cap</th>
+        </tr>
+        <tr>
+            <td><input type="number" id="prezzoAzioni" min="0" value="30" onchange="calculateMarketCap()"></td>
+            <td><input type="number" id="quantitaAzioni" min="0" value="40" onchange="calculateMarketCap()"></td>
+            <td><span id="marketCapAzioni" class="market-cap">1200</span></td>
+            <td><span id="percentualeAzioni" class="market-cap">-</span></td>
+        </tr>
+        <tr>
+            <td><input type="number" id="prezzoObbligazioni" min="0" value="20" onchange="calculateMarketCap()"></td>
+            <td><input type="number" id="quantitaObbligazioni" min="0" value="30" onchange="calculateMarketCap()"></td>
+            <td><span id="marketCapObbligazioni" class="market-cap">600</span></td>
+            <td><span id="percentualeObbligazioni" class="market-cap">-</span></td>
+        </tr>
+        <tr>
+            <td><input type="number" id="prezzoCripto" min="0" value="15" onchange="calculateMarketCap()"></td>
+            <td><input type="number" id="quantitaCripto" min="0" value="25" onchange="calculateMarketCap()"></td>
+            <td><span id="marketCapCripto" class="market-cap">375</span></td>
+            <td><span id="percentualeCripto" class="market-cap">-</span></td>
+        </tr>
+        <tr>
+            <td><input type="number" id="prezzoMateriePrime" min="0" value="25" onchange="calculateMarketCap()"></td>
+            <td><input type="number" id="quantitaMateriePrime" min="0" value="35" onchange="calculateMarketCap()"></td>
+            <td><span id="marketCapMateriePrime" class="market-cap">875</span></td>
+            <td><span id="percentualeMateriePrime" class="market-cap">-</span></td>
+        </tr>
+    </table>
+
+    <div class="input-group">
+        <label for="marketLevel">Livello di Gioco:</label>
+        <select id="marketLevel" onchange="calculateCashInCirculation()">
+            <option value="expansion">Mercato in espansione</option>
+            <option value="stable">Mercato stabile</option>
+            <option value="bubble">Bolla imminente</option>
+        </select>
+    </div>
+
+    <div class="input-group">
+        <label for="marketCapTotale">Market Cap Totale:</label>
+        <input type="number" id="marketCapTotale" readonly>
+    </div>
+
+    <div class="input-group">
+        <label for="cashCirculation">Cash in Circolazione Totale:</label>
+        <input type="number" id="cashCirculation" readonly>
+    </div>
+
+    <button class="button" onclick="salvaEContinua()">Continua</button>
+
+    <script>
+        function calculateMarketCap() {
+            const prezzoAzioni = parseFloat(document.getElementById('prezzoAzioni').value);
+            const quantitaAzioni = parseFloat(document.getElementById('quantitaAzioni').value);
+            const prezzoObbligazioni = parseFloat(document.getElementById('prezzoObbligazioni').value);
+            const quantitaObbligazioni = parseFloat(document.getElementById('quantitaObbligazioni').value);
+            const prezzoCripto = parseFloat(document.getElementById('prezzoCripto').value);
+            const quantitaCripto = parseFloat(document.getElementById('quantitaCripto').value);
+            const prezzoMateriePrime = parseFloat(document.getElementById('prezzoMateriePrime').value);
+            const quantitaMateriePrime = parseFloat(document.getElementById('quantitaMateriePrime').value);
+
+            const marketCapAzioni = prezzoAzioni * quantitaAzioni;
+            const marketCapObbligazioni = prezzoObbligazioni * quantitaObbligazioni;
+            const marketCapCripto = prezzoCripto * quantitaCripto;
+            const marketCapMateriePrime = prezzoMateriePrime * quantitaMateriePrime;
+
+            const marketCapTotale = marketCapAzioni + marketCapObbligazioni + marketCapCripto + marketCapMateriePrime;
+
+            document.getElementById('marketCapAzioni').innerText = marketCapAzioni;
+            document.getElementById('marketCapObbligazioni').innerText = marketCapObbligazioni;
+            document.getElementById('marketCapCripto').innerText = marketCapCripto;
+            document.getElementById('marketCapMateriePrime').innerText = marketCapMateriePrime;
+            document.getElementById('marketCapTotale').value = marketCapTotale;
+
+            document.getElementById('percentualeAzioni').innerText = ((marketCapAzioni / marketCapTotale) * 100).toFixed(2) + '%';
+            document.getElementById('percentualeObbligazioni').innerText = ((marketCapObbligazioni / marketCapTotale) * 100).toFixed(2) + '%';
+            document.getElementById('percentualeCripto').innerText = ((marketCapCripto / marketCapTotale) * 100).toFixed(2) + '%';
+            document.getElementById('percentualeMateriePrime').innerText = ((marketCapMateriePrime / marketCapTotale) * 100).toFixed(2) + '%';
+
+            calculateCashInCirculation(marketCapTotale);
+        }
+
+        function calculateCashInCirculation(marketCapTotale = 0) {
+            const marketLevel = document.getElementById('marketLevel').value;
+
+            let cashInCirculation;
+            if (marketLevel === "expansion") {
+                cashInCirculation = marketCapTotale * 1.5;
+            } else if (marketLevel === "stable") {
+                cashInCirculation = marketCapTotale * 1;
+            } else if (marketLevel === "bubble") {
+                cashInCirculation = marketCapTotale * 0.5;
+            }
+
+            document.getElementById('cashCirculation').value = cashInCirculation.toFixed(2);
+        }
+
+        function salvaEContinua() {
+            const assetConfig = {
+                azioni: {
+                    prezzo: document.getElementById('prezzoAzioni').value,
+                    quantita: document.getElementById('quantitaAzioni').value
+                },
+                obbligazioni: {
+                    prezzo: document.getElementById('prezzoObbligazioni').value,
+                    quantita: document.getElementById('quantitaObbligazioni').value
+                },
+                cripto: {
+                    prezzo: document.getElementById('prezzoCripto').value,
+                    quantita: document.getElementById('quantitaCripto').value
+                },
+                materiePrime: {
+                    prezzo: document.getElementById('prezzoMateriePrime').value,
+                    quantita: document.getElementById('quantitaMateriePrime').value
+                },
+                cashCirculation: document.getElementById('cashCirculation').value,
+                marketCapTotale: document.getElementById('marketCapTotale').value,
+                marketLevel: document.getElementById('marketLevel').value
+            };
+
+            localStorage.setItem('assetConfig', JSON.stringify(assetConfig));
+            window.location.href = "distribuisciAsset.html";
+        }
+
+        // Calcola il market cap iniziale e il cash in circolazione all'avvio della pagina
+        calculateMarketCap();
+    </script>
+</body>
+</html>

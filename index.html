@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MARKET MASTER - Accesso</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        h1 {
+            font-size: 48px;
+            margin-bottom: 50px;
+        }
+        .input-group {
+            margin: 15px 0;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        .input-group input {
+            padding: 10px;
+            font-size: 16px;
+            width: 200px;
+        }
+        .button {
+            padding: 15px 30px;
+            font-size: 18px;
+            margin: 20px 10px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        .button.secondary {
+            background-color: #2196F3;
+        }
+        #errorMessage {
+            color: red;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>MARKET MASTER</h1>
+
+    <div class="input-group">
+        <label for="userID">ID Utente:</label>
+        <input type="text" id="userID" required>
+    </div>
+
+    <div class="input-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" required>
+    </div>
+
+    <button class="button" onclick="login()">Accedi</button>
+    <button class="button secondary" onclick="register()">Registrati</button>
+
+    <div id="errorMessage"></div>
+
+    <script>
+        // ID e password di esempio per l'accesso
+        const validUserID = "admin";
+        const validPassword = "1234";
+
+        function login() {
+            const userID = document.getElementById('userID').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+
+            if (userID === validUserID && password === validPassword) {
+                window.location.href = "newgame.html";
+            } else {
+                errorMessage.innerText = "ID Utente o Password errati. Riprova.";
+            }
+        }
+
+        function register() {
+            alert("Funzione di registrazione non ancora implementata.");
+            // In futuro potrai implementare la funzione di registrazione qui.
+        }
+    </script>
+</body>
+</html>
